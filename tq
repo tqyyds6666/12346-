@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main() {
+    int num, max_num, operator_num, has_bracket, has_decimal, output_method;
+    printf("请输入题目数量：");
+    scanf("%d", &num);
+    printf("请输入最大数：");
+    scanf("%d", &max_num);
+    printf("请输入运算符数量（1-4）：");
+    scanf("%d", &operator_num);
+    printf("是否有括号（1为是，0为否）：");
+    scanf("%d", &has_bracket);
+    printf("是否有小数（1为是，0为否）：");
+    scanf("%d", &has_decimal);
+    printf("请选择输出方式（1为输出到文件，2为打印机）：");
+    scanf("%d", &output_method);
+
+    srand((unsigned)time(NULL)); // 设置随机数种子
+
+    char operators[4] = {'+', '-', '*', '/'};
+    FILE *fp;
+    if (output_method == 1) {
+        fp = fopen("exercises.txt", "w"); // 打开文件
+    }
+
+    for (int i = 1; i <= num; i++) {
+        float a, b, c, d;
+        if (has_decimal) {
+            a = (float)rand() / RAND_MAX * max_num;
+            b = (float)rand() / RAND_MAX * max_num;
+            c = (float)rand() / RAND_MAX * max_num;
+            d = (float)rand() / RAND_MAX * max_num;
+        } else {
+            a = rand() % max_num + 1;
+            b = rand() % max_num + 1;
+            c = rand() % max_num + 1;
+            d = rand() % max_num + 1;
+        }
+        int op1 = rand() % operator_num;
+        int op2 = rand() % operator_num;
+        int op3 = rand() % operator_num;
+
+        // 判断是否有括号
+        if (has_bracket) {
+            int bracket = rand() % 2;
+            if (bracket == 0) {
+                if (has_decimal) {
+                    printf("(%.2f %c %.2f) %c %.2f = \n", a, operators[op1], b, operators[op2], c);
+                    if (output_method == 1) {
+                        fprintf(fp, "(%.2f %c %.2f) %c %.2f = \n", a, operators[op1], b, operators[op2], c);
+                    }
+                } else {
+                    printf("(%d %c %d) %c %d = \n", (int)a, operators[op1], (int)b, operators[op2], (int)c);
+                    if (output_method == 1) {
+                        fprintf(fp, "(%d %c %d) %c %d = \n", (int)a, operators[op1], (int)b, operators[op2], (int)c);
+                    }
+                }
+            } else {
+                if (has_decimal) {
+                    printf("%.2f %c (%.2f %c %.2f) = \n", a, operators[op1], b, operators[op2], c);
+                    if (output_method == 1) {
+                        fprintf(fp, "%.2f %c (%.2f %c %.2f) = \n", a, operators[op1], b, operators[op2], c);
+                    }
+                } else {
+                    printf("%d %c (%d %c %d) = \n", (int)a, operators[op1], (int)b, operators[op2], (int)c);
+                    if (output_method == 1) {
+                        fprintf(fp, "%d %c (%d %c %d) = \n", (int)a, operators[op1], (int)b, operators[op2], (int)c);
+                    }
+                }
+            }
+        } else {
+            if (has_decimal) {
+                printf("%.2f %c %.2f %c %.2f = \n", a, operators[op1], b, operators[op2], c);
+                if (output_method == 1) {
+                    fprintf(fp, "%.2f %c %.2f %c %.2f = \n", a, operators[op1], b, operators[op2], c);
+                }
+            } else {
+                printf("%d %c %d %c %d = \n", (int)a, operators[op1], (int)b, operators[op2], (int)c);
+                if (output_method == 1) {
+                    fprintf(fp, "%d %c %d %c %d = \n", (int)a, operators[op1], (int)b, operators[op2], (int)c);
+                }
+            }
+        }
+	}
+    if (output_method == 1) {
+        fclose(fp); // 关闭文件
+    }
+
+    return 0;
+}
+
